@@ -1,3 +1,6 @@
+import os
+import pyaudio
+import wave
 from faster_whisper import WhisperModel
 
 def record_chunk(p, stream, file_path, chunk_length=1):
@@ -25,8 +28,11 @@ def main2():
         while True:
             chunk_file = "temp_chunk.wav"
             record_chunk(p, stream, chunk_file)
-            print(NEON_GREEN + transcription + RESET_COLOR)
+            transcription = transcribe_chunk(model, chunk_file)
+            print(transcription)
             os.remove(chunk_file)
+
+            accumulated_transcription += transcription + " "
 
     except KeyboardInterrupt:
         print("Stop..")
